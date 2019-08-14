@@ -1,0 +1,34 @@
+body {
+    background: #ffec40;
+    font-family: Arial;
+    margin: 30px;
+  }
+  .detector-info{
+    text-align: center;
+  }
+
+  #debug-container {
+    max-width: 400px;
+    border: 3px solid rgb(76, 184, 49);
+    padding: 20px;
+    margin-bottom: 10px;
+    margin: 0 auto 10px;
+  }
+  
+  .debug-info {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+    font-size: 20px;
+  }
+  
+  .refresh-button {
+    padding: 10px;
+    background: rgb(76, 184, 49);
+    border: 1px solid black;
+    color: white;
+    font-family: inherit;
+    font-size: 18px;
+    position: relative;
+    left: 47%;
+  }
