@@ -1,29 +1,14 @@
-/*!
- * UAParser.js v0.7.20
- * Lightweight JavaScript-based User-Agent string parser
- * https://github.com/faisalman/ua-parser-js
- *
- * Copyright © 2012-2019 Faisal Salman <f@faisalman.com>
- * Licensed under MIT License
- */
-
 (function (window, undefined) {
-
-  'use strict';
-
-  //////////////
   // Constants
-  /////////////
 
-
-  var LIBVERSION  = '0.7.20',
+  let LIBVERSION  = '0.7.20',
       EMPTY       = '',
       UNKNOWN     = '?',
       FUNC_TYPE   = 'function',
       UNDEF_TYPE  = 'undefined',
       OBJ_TYPE    = 'object',
       STR_TYPE    = 'string',
-      MAJOR       = 'major', // deprecated
+      MAJOR       = 'major',
       MODEL       = 'model',
       NAME        = 'name',
       TYPE        = 'type',
@@ -37,16 +22,12 @@
       WEARABLE    = 'wearable',
       EMBEDDED    = 'embedded';
 
-
-  ///////////
   // Helper
-  //////////
 
-
-  var util = {
+  let util = {
       extend : function (regexes, extensions) {
-          var mergedRegexes = {};
-          for (var i in regexes) {
+          let mergedRegexes = {};
+          for (let i in regexes) {
               if (extensions[i] && extensions[i].length % 2 === 0) {
                   mergedRegexes[i] = extensions[i].concat(regexes[i]);
               } else {
@@ -73,22 +54,18 @@
       }
   };
 
-
-  ///////////////
   // Map helper
-  //////////////
 
-
-  var mapper = {
+  let mapper = {
 
       rgx : function (ua, arrays) {
 
-          var i = 0, j, k, p, q, matches, match;
+          let i = 0, j, k, p, q, matches, match;
 
           // loop through all regexes maps
           while (i < arrays.length && !matches) {
 
-              var regex = arrays[i],       // even sequence (0,2,4,..)
+              let regex = arrays[i],       // even sequence (0,2,4,..)
                   props = arrays[i + 1];   // odd sequence (1,3,5,..)
               j = k = 0;
 
@@ -135,10 +112,10 @@
 
       str : function (str, map) {
 
-          for (var i in map) {
+          for (let i in map) {
               // check if array
               if (typeof map[i] === OBJ_TYPE && map[i].length > 0) {
-                  for (var j = 0; j < map[i].length; j++) {
+                  for (let j = 0; j < map[i].length; j++) {
                       if (util.has(map[i][j], str)) {
                           return (i === UNKNOWN) ? undefined : i;
                       }
@@ -151,13 +128,10 @@
       }
   };
 
-
-  ///////////////
   // String map
-  //////////////
 
 
-  var maps = {
+  let maps = {
 
       browser : {
           oldsafari : {
@@ -210,13 +184,10 @@
       }
   };
 
-
-  //////////////
   // Regex map
-  /////////////
 
 
-  var regexes = {
+  let regexes = {
 
       browser : [[
 
@@ -759,7 +730,7 @@
   /////////////////
   // Constructor
   ////////////////
-  var UAParser = function (uastring, extensions) {
+  let UAParser = function (uastring, extensions) {
 
       if (typeof uastring === 'object') {
           extensions = uastring;
@@ -770,32 +741,32 @@
           return new UAParser(uastring, extensions).getResult();
       }
 
-      var ua = uastring || ((window && window.navigator && window.navigator.userAgent) ? window.navigator.userAgent : EMPTY);
-      var rgxmap = extensions ? util.extend(regexes, extensions) : regexes;
+      let ua = uastring || ((window && window.navigator && window.navigator.userAgent) ? window.navigator.userAgent : EMPTY);
+      let rgxmap = extensions ? util.extend(regexes, extensions) : regexes;
 
       this.getBrowser = function () {
-          var browser = { name: undefined, version: undefined };
+          let browser = { name: undefined, version: undefined };
           mapper.rgx.call(browser, ua, rgxmap.browser);
           browser.major = util.major(browser.version); // deprecated
           return browser;
       };
       this.getCPU = function () {
-          var cpu = { architecture: undefined };
+          let cpu = { architecture: undefined };
           mapper.rgx.call(cpu, ua, rgxmap.cpu);
           return cpu;
       };
       this.getDevice = function () {
-          var device = { vendor: undefined, model: undefined, type: undefined };
+          let device = { vendor: undefined, model: undefined, type: undefined };
           mapper.rgx.call(device, ua, rgxmap.device);
           return device;
       };
       this.getEngine = function () {
-          var engine = { name: undefined, version: undefined };
+          let engine = { name: undefined, version: undefined };
           mapper.rgx.call(engine, ua, rgxmap.engine);
           return engine;
       };
       this.getOS = function () {
-          var os = { name: undefined, version: undefined };
+          let os = { name: undefined, version: undefined };
           mapper.rgx.call(os, ua, rgxmap.os);
           return os;
       };
@@ -872,22 +843,17 @@
       }
   }
 
-  // jQuery/Zepto specific (optional)
-  // Note:
-  //   In AMD env the global scope should be kept clean, but jQuery is an exception.
-  //   jQuery always exports to global scope, unless jQuery.noConflict(true) is used,
-  //   and we should catch that.
-  var $ = window && (window.jQuery || window.Zepto);
+  let $ = window && (window.jQuery || window.Zepto);
   if (typeof $ !== UNDEF_TYPE && !$.ua) {
-      var parser = new UAParser();
+      let parser = new UAParser();
       $.ua = parser.getResult();
       $.ua.get = function () {
           return parser.getUA();
       };
       $.ua.set = function (uastring) {
           parser.setUA(uastring);
-          var result = parser.getResult();
-          for (var prop in result) {
+          let result = parser.getResult();
+          for (let prop in result) {
               $.ua[prop] = result[prop];
           }
       };
